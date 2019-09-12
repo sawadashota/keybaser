@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"sync"
 	"testing"
 
 	"github.com/keybase/go-keybase-chat-bot/kbchat"
@@ -115,15 +116,18 @@ func TestKeybaser_Listen(t *testing.T) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 
+	var once sync.Once
 	k.Command("greet <name>", &keybaser.CommandDefinition{
 		Description:       "say greeting",
 		Example:           "greet alice",
 		AuthorizationFunc: nil,
 		Handler: func(request keybaser.Request, response keybaser.ResponseWriter) {
-			name := request.Param("name")
-			response.Reply("hello " + name)
+			once.Do(func() {
+				name := request.Param("name")
+				response.Reply("hello " + name)
 
-			cancel()
+				cancel()
+			})
 		},
 	})
 
