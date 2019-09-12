@@ -1,0 +1,28 @@
+name: Release Docker Image
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+
+  build:
+ 
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag docker.pkg.github.com/sawadashota/keybaser/base:latest
+    - name: Tag Commit Hash
+      run: docker tag docker.pkg.github.com/sawadashota/keybaser/base:latest docker.pkg.github.com/sawadashota/keybaser/base:${GITHUB_SHA}
+    - name: Login to docker.pkg.github.com
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: docker login docker.pkg.github.com -u="${DOCKER_USER}" -p="${DOCKER_PASSWORD}"
+    - name: Push to docker.pkg.github.com
+      run: |
+        docker push docker.pkg.github.com/sawadashota/keybaser/base:latest
+        docker push docker.pkg.github.com/sawadashota/keybaser/base:${GITHUB_SHA}
