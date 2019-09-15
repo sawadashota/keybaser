@@ -6,6 +6,9 @@ executors:
       - image: circleci/golang:1.13
         environment:
           TEST_RESULTS: /tmp/test-results
+  docker:
+    docker:
+      - image: circleci/python
 
 commands:
   download:
@@ -62,7 +65,44 @@ jobs:
       - store_test_results:
           path: /tmp/test-results
 
+  build-base-image:
+    executor: docker
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: docker build
+          command: docker build -t sawadashota/keybaser-base:latest .
+
+  push-base-image:
+    executor: docker
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Image
+          command: docker build -t sawadashota/keybaser-base:latest .
+      - run:
+          name: Login to DockerHub
+          command: docker login -u "${DOCKER_HUB_USER}" -p "${DOCKER_HUB_PASSWORD}"
+      - deploy:
+          command: docker push sawadashota/keybaser-base:latest
+      - deploy:
+          command: |
+            docker tag sawadashota/keybaser-base:latest sawadashota/keybaser-base:${CIRCLE_SHA1}
+            docker push sawadashota/keybaser-base:${CIRCLE_SHA1}
+
 workflows:
-  test:
+  workflow:
     jobs:
       - test
+      - build-base-image:
+          filters:
+            branches:
+              ignore: master
+      - push-base-image:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
