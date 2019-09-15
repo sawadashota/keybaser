@@ -3,16 +3,20 @@ package main
 import (
 	"context"
 	"log"
+	"os"
 
 	"github.com/keybase/go-keybase-chat-bot/kbchat"
 	"github.com/sawadashota/keybaser"
 )
 
 func main() {
+	username := os.Getenv("KEYBASE_USERNAME")
+	paperkey := os.Getenv("KEYBASE_PAPERKEY")
+
 	client, err := kbchat.Start(kbchat.RunOptions{
 		Oneshot: &kbchat.OneshotOptions{
-			Username: "<Bot's Username>",
-			PaperKey: "<Bot's PaperKey>",
+			Username: username,
+			PaperKey: paperkey,
 		},
 	})
 	if err != nil {
