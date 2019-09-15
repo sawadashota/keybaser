@@ -25,6 +25,11 @@ Dependencies
 * `commander` [github.com/shomali11/slacker](https://github.com/shomali11/slacker)
 * `go-keybase-chat-bot` [github.com/keybase/go-keybase-chat-bot](https://github.com/keybase/go-keybase-chat-bot)
 
+Requirements
+---
+
+* [Keybase App](https://keybase.io/download)
+
 Install
 ---
 
@@ -38,6 +43,8 @@ Examples
 ### Example 1
 
 Defining a simple command
+
+[examples/simple](./examples/simple)
 
 ```go
 package main
@@ -88,6 +95,8 @@ Example 2
 
 Defining a command with parameter, description and example
 
+[examples/parameter](./examples/parameter)
+
 ```go
 package main
 
@@ -133,4 +142,38 @@ func main() {
 		log.Fatal(err)
 	}
 }
+```
+
+Example 3
+---
+
+Sample of running on Docker.
+
+Keybaser doesn't work Go's binary alone because [github.com/keybase/go-keybase-chat-bot](https://github.com/keybase/go-keybase-chat-bot) requires keybase app.
+So this sample is using [sawadashota/keybaser-base](https://hub.docker.com/r/sawadashota/keybaser-base) as execution image.
+The image's Dockerfile is [here](./Dockerfile)
+
+[examples/docker](./examples/docker)
+
+```dockerfile
+# Build Chat Bot app
+FROM golang:1.13-buster as builder
+
+WORKDIR /app
+
+COPY . .
+
+RUN go mod download && \
+    go mod verify && \
+    CGO_ENABLED=0 GO111MODULE=on GOOS=linux GOARCH=amd64 \
+        go build \
+        -o app \
+        main.go
+
+# Copy chat bot app binary to executor image
+FROM sawadashota/keybaser-base:latest
+
+COPY --from=builder /app/app /usr/bin/app
+
+ENTRYPOINT ["app"]
 ```
