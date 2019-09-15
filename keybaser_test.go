@@ -97,6 +97,7 @@ func TestKeybaser_Listen(t *testing.T) {
 				Username: "alice",
 			},
 			Content: chat1.MsgContent{
+				TypeName: "text",
 				Text: &chat1.MessageText{
 					Body: "@example greet alice",
 				},
