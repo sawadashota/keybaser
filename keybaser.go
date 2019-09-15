@@ -140,6 +140,10 @@ func (k *Keybaser) Listen(ctx context.Context) error {
 				continue
 			}
 
+			if msg.Message.Content.TypeName != "text" {
+				continue
+			}
+
 			if k.isFromBot(&msg) {
 				continue
 			}
