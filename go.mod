@@ -3,7 +3,7 @@ module github.com/sawadashota/keybaser
 go 1.13
 
 require (
-	github.com/keybase/go-keybase-chat-bot v0.0.0-20190903135515-79c56220e558
+	github.com/keybase/go-keybase-chat-bot v0.0.0-20191009190115-00cedf7467d9
 	github.com/pkg/errors v0.8.1
 	github.com/shomali11/commander v0.0.0-20190608032441-141478e8c069
 	github.com/shomali11/proper v0.0.0-20190608032528-6e70a05688e7
