@@ -150,8 +150,8 @@ Example 3
 Sample of running on Docker.
 
 Keybaser doesn't work Go's binary alone because [github.com/keybase/go-keybase-chat-bot](https://github.com/keybase/go-keybase-chat-bot) requires keybase app.
-So this sample is using [sawadashota/keybaser-base](https://hub.docker.com/r/sawadashota/keybaser-base) as execution image.
-The image's Dockerfile is [here](./Dockerfile)
+So this sample is using [keybaseio/client](https://hub.docker.com/r/keybaseio/client) as execution image.
+The image's Dockerfile is [here](https://github.com/keybase/client/tree/master/packaging/linux/docker)
 
 [examples/docker](./examples/docker)
 
@@ -171,9 +171,9 @@ RUN go mod download && \
         main.go
 
 # Copy chat bot app binary to executor image
-FROM sawadashota/keybaser-base:latest
+FROM keybaseio/client:nightly-slim
 
 COPY --from=builder /app/app /usr/bin/app
 
-ENTRYPOINT ["app"]
+CMD ["app"]
 ```

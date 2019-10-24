@@ -13,8 +13,8 @@ RUN go mod download && \
         main.go
 
 # Copy chat bot app binary to executor image
-FROM sawadashota/keybaser-base:latest
+FROM keybaseio/client:nightly-slim
 
 COPY --from=builder /app/app /usr/bin/app
 
-ENTRYPOINT ["app"]
+CMD ["app"]
