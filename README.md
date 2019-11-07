@@ -174,6 +174,4 @@ RUN go mod download && \
 FROM keybaseio/client:nightly-slim
 
 COPY --from=builder /app/app /usr/bin/app
-
-CMD ["app"]
 ```

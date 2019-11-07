@@ -20,6 +20,6 @@ Then, build image and run with the envs.
 
 ```
 $ docker build -t keybaser-example .
-$ docker run --rm -it -e KEYBASE_USERNAME=${KEYBASE_USERNAME} -e KEYBASE_PAPERKEY=${KEYBASE_PAPERKEY} keybaser-example
+$ docker run --rm -it -e KEYBASE_USERNAME=${KEYBASE_USERNAME} -e KEYBASE_PAPERKEY=${KEYBASE_PAPERKEY} keybaser-example app
 INFO[0003] starting subscribe messages as <your keybase username>      severity=info
 ```
