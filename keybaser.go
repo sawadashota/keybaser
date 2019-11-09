@@ -14,7 +14,7 @@ import (
 // KeybaseChatAPIClient .
 type KeybaseChatAPIClient interface {
 	ListenForNewTextMessages() (kbchat.NewSubscription, error)
-	SendMessage(channel chat1.ChatChannel, body string) (kbchat.SendResponse, error)
+	SendMessage(channel chat1.ChatChannel, body string, args ...interface{}) (kbchat.SendResponse, error)
 	GetUsername() string
 }
 
